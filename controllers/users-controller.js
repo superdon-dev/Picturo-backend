@@ -3,14 +3,14 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 
-const DUMMY_USERS = [
-  {
-    id: "u1",
-    name: "Superdon",
-    email: "test@test.com",
-    password: "12345",
-  },
-];
+// const DUMMY_USERS = [
+//   {
+//     id: "u1",
+//     name: "Superdon",
+//     email: "test@test.com",
+//     password: "12345",
+//   },
+// ];
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -32,7 +32,7 @@ const signup = async (req, res, next) => {
   if (!errors.isEmpty()) {
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
-  const { name, email, password, places } = req.body;
+  const { name, email, password } = req.body;
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
@@ -56,7 +56,7 @@ const signup = async (req, res, next) => {
     image:
       "https://avatars3.githubusercontent.com/u/36360335?s=460&u=60efbfa1383ca82470a4333e8cfd2cd82dfb8ff3&v=4",
     password,
-    places,
+    places: [],
   });
   try {
     await createdUser.save();
