@@ -1,3 +1,4 @@
+const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
@@ -95,8 +96,7 @@ const createPlace = async (req, res, next) => {
       lat: 40.7484474,
       lng: -73.9871516,
     },
-    image:
-      "https://www.history.com/.image/t_share/MTY1MTc1MTk3ODI0MDAxNjA5/topic-statue-of-liberty-gettyimages-960610006-promo.jpg",
+    image: req.file.path,
     creator,
   });
   let user;
@@ -180,6 +180,7 @@ const deletePlace = async (req, res, next) => {
     const error = new HttpError("Could not find place for this id.", 404);
     return next(error);
   }
+  const imagePath = place.image;
   //deleting document
   try {
     const sess = await mongoose.startSession();
@@ -195,6 +196,9 @@ const deletePlace = async (req, res, next) => {
     );
     return next(error);
   }
+  fs.unlink(imagePath, (err) => {
+    console.log(err);
+  });
   res.status(200).json({ message: "Deleted place." });
 };
 
