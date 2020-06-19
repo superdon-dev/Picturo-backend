@@ -1,0 +1,8 @@
+{
+  "env": {
+    "DB_USER": "superdon",
+    "DB_PASSWORD": "superdon123",
+    "DB_NAME": "picturo-prod",
+    "JWT_KEY": "supersecretkey"
+  }
+}
